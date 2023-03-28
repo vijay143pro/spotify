@@ -17,6 +17,7 @@ const LikedSongs = () => {
 			setIsFetching(true);
 			const url = `http://localhost:8080/api` + `/songs/like`;  //http://localhost:8080/api
 			const { data } = await axiosInstance.get(url);
+			console.log("let see",data)
 			setSongs(data.data);
 			setIsFetching(false);
 		} catch (error) {
@@ -59,7 +60,7 @@ const LikedSongs = () => {
 					</div>
 				) : (
 					<Fragment>
-						{songs.map((song) => (
+						{songs.map((song,index) => (
 							<Fragment key={song._id}>
 								{user?.likedSongs.indexOf(song._id) !== -1 && (
 									<Song song={song} />

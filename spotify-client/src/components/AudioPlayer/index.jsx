@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentSong } from "../../redux/audioPlayer";
+import axiosInstance from "../../redux/axiosInstance";
 import Like from "../Like";
 import { IconButton } from "@mui/material";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
@@ -14,9 +15,13 @@ const AudioPlayer = () => {
 	const [duration, setDuration] = useState(0);
 	const { currentSong } = useSelector((state) => state.audioPlayer);
 	const dispatch = useDispatch();
-
 	const audioRef = useRef();
 	const intervalRef = useRef();
+	const [songs, setSongs] = useState([]);
+	const url = `http://localhost:8080/api` + `/songs/like`;  //http://localhost:8080/api
+			const { data } = axiosInstance.get(url);
+			console.log("let see",data)
+			setSongs(data.data);
 
 	const startTimer = () => {
 		clearInterval(intervalRef.current);
@@ -64,6 +69,15 @@ const AudioPlayer = () => {
 			: dispatch(setCurrentSong({ ...currentSong, action: "play" }));
 	};
 
+	const prevSong=()=>{
+		console.log("previous");
+		//for(let i=0;i<=0;i++){}
+	}
+	const nextSong=()=>{
+		console.log("next");
+		//for(let i=0;i<=0;i++){}
+	}
+
 	return (
 		<div className={styles.audio_player}>
 			<div className={styles.left}>
@@ -75,13 +89,13 @@ const AudioPlayer = () => {
 			</div>
 			<div className={styles.center}>
 				<div className={styles.audio_controls}>
-					<IconButton className={styles.prev}>
+					<IconButton className={styles.prev} onClick={prevSong}>
 						<SkipPreviousIcon />
 					</IconButton>
 					<IconButton className={styles.play} onClick={handleActions}>
 						{currentSong.action === "play" ? <PauseIcon /> : <PlayArrowIcon />}
 					</IconButton>
-					<IconButton className={styles.next}>
+					<IconButton className={styles.next} onClick={nextSong}>
 						<SkipNextIcon />
 					</IconButton>
 				</div>
